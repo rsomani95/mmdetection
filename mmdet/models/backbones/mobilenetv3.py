@@ -1,6 +1,7 @@
 import torch.nn as nn
 import timm
 from ..builder import BACKBONES
+from typing import Optional, Collection
 from torch.nn.modules.batchnorm import _BatchNorm
 
 
