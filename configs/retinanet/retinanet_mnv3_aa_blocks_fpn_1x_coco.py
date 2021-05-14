@@ -23,3 +23,4 @@ LR_SCALER = TOTAL_SAMPLES / DEFAULT_TOTAL_SAMPLES
 LR = LR_SCALER * DEFAULT_LR  # == 0.0675
 # 
 optimizer = dict(type="SGD", lr=LR, momentum=0.9, weight_decay=0.0001)
+find_unused_parameters=True  # DistributedDataParallel
