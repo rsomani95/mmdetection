@@ -17,10 +17,11 @@ DEFAULT_TOTAL_SAMPLES = 16
 DEFAULT_LR = 0.02
 
 NUM_GPUS = 3
-SAMPLES_PER_GPU = 18  #  defined in "../_base_/datasets/coco_detection_custom.py",
-TOTAL_SAMPLES = SAMPLES_PER_GPU * NUM_GPUS
+BATCH_SIZE = 18  #  per GPU
+TOTAL_SAMPLES = BATCH_SIZE * NUM_GPUS
 LR_SCALER = TOTAL_SAMPLES / DEFAULT_TOTAL_SAMPLES
 LR = LR_SCALER * DEFAULT_LR  # == 0.0675
-# 
+#
+
 optimizer = dict(type="SGD", lr=LR, momentum=0.9, weight_decay=0.0001)
-find_unused_parameters=True  # DistributedDataParallel
+#find_unused_parameters=True  # DistributedDataParallel

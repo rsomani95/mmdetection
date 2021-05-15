@@ -1,4 +1,5 @@
 # dataset settings
+BATCH_SIZE=18
 dataset_type = "CocoDataset"
 data_root = "/home/synopsis/datasets/coco/"
 img_norm_cfg = dict(
@@ -32,7 +33,7 @@ test_pipeline = [
     ),
 ]
 data = dict(
-    samples_per_gpu=18,  # RTX 3090 allows for batch size = 18 @ 640x640 for mnv3
+    samples_per_gpu=BATCH_SIZE,  # RTX 3090 allows for batch size = 18 @ 640x640 for mnv3
     workers_per_gpu=2,
     train=dict(
         type=dataset_type,
