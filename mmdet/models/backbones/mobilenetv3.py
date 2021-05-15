@@ -74,4 +74,4 @@ class MobileNetV3AABlocks(nn.Module):
                     m.eval()
 
     def forward(self, x):
-        return self.model(x)
+        return tuple(self.model(x))
