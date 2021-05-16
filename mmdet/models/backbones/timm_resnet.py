@@ -50,8 +50,9 @@ class TIMMResNet50(nn.Module):
         # `freeze_stages` only refer to the bottleneck blocks
         # ACRONYMS: m => model; l => layer
         m = self.model
-        for l in [m.conv1, m.bn1, m.act1]:
-            l.eval()
+        m.conv1.eval()
+        m.bn1.eval()
+        for l in [m.conv1, m.bn1]:
             for param in l.parameters():
                 param.requires_grad = False
         for i in range(1, self.frozen_stages + 1):
