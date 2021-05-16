@@ -6,8 +6,8 @@ model = dict(
         type="TIMMResNet50",
         out_indices=(1, 2, 3, 4),
         pretrained=True,
-        # frozen_stages=1,
-        # norm_eval=True,
+        frozen_stages=1,
+        norm_eval=True,
     ),
     neck=dict(
         type="FPN",

@@ -20,8 +20,8 @@ class TIMMResNet50(nn.Module):
         exportable: bool = None,
         no_jit: bool = None,
         out_indices: Optional[Collection[int]] = (1, 2, 3, 4),
-        # norm_eval: bool = True,
-        # frozen_stages: int = 1,
+        norm_eval: bool = True,
+        frozen_stages: int = 1,
         **timm_kwargs,
     ):
         super().__init__()
@@ -30,8 +30,8 @@ class TIMMResNet50(nn.Module):
             timm_kwargs.update(dict(out_indices=out_indices))
 
         self.pretrained = pretrained
-        # self.norm_eval = norm_eval
-        # self.frozen_stages = frozen_stages
+        self.norm_eval = norm_eval
+        self.frozen_stages = frozen_stages
         self.model = timm.create_model(
             model_name="resnet50",
             pretrained=pretrained,
@@ -46,10 +46,30 @@ class TIMMResNet50(nn.Module):
         pass
 
     def _freeze_stages(self):
-        pass
+        # Freeze stem regardless of `freeze_stages` value
+        # `freeze_stages` only refer to the bottleneck blocks
+        # ACRONYMS: m => model; l => layer
+        m = self.model
+        for l in [m.conv1, m.bn1, m.act1]:
+            l.eval()
+            for param in l.parameters():
+                param.requires_grad = False
+        for i in range(1, self.frozen_stages + 1):
+            l = getattr(self, f"layer{i}")
+            l.eval()
+            for param in l.parameters():
+                param.requires_grad = False
 
-    # def train(self):
-    #     pass
+    def train(self, mode=True):
+        """Convert the model into training mode while keep normalization layer
+        freezed."""
+        super(ResNet, self).train(mode)
+        self._freeze_stages()
+        if mode and self.norm_eval:
+            for m in self.modules():
+                # trick: eval have effect on BatchNorm only
+                if isinstance(m, _BatchNorm):
+                    m.eval()
 
     def forward(self, x):
         return tuple(self.model(x))
