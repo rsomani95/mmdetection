@@ -19,20 +19,20 @@ class TIMMResNet50(nn.Module):
         scriptable: bool = None,
         exportable: bool = None,
         no_jit: bool = None,
-        out_indices: Optional[Collection[int]] = (1, 2, 3, 4),
+        # out_indices: Optional[Collection[int]] = (1, 2, 3, 4),
         norm_eval: bool = True,
         frozen_stages: int = 1,
         **timm_kwargs,
     ):
         super().__init__()
-        timm_kwargs.update(dict(features_only=True))
-        if out_indices is not None:
-            timm_kwargs.update(dict(out_indices=out_indices))
+        # timm_kwargs.update(dict(features_only=True))
+        # if out_indices is not None:
+        #     timm_kwargs.update(dict(out_indices=out_indices))
 
         self.pretrained = pretrained
         self.norm_eval = norm_eval
         self.frozen_stages = frozen_stages
-        self.model = timm.create_model(
+        model = timm.create_model(
             model_name="resnet50",
             pretrained=pretrained,
             checkpoint_path=checkpoint_path,
@@ -41,6 +41,31 @@ class TIMMResNet50(nn.Module):
             no_jit=no_jit,
             **timm_kwargs,
         )
+        self.conv1 = model.conv1
+        self.bn1 = model.bn1
+        self.act1 = model.act1
+        self.maxpool = model.maxpool
+        self.layer1 = model.layer1
+        self.layer2 = model.layer2
+        self.layer3 = model.layer3
+        self.layer4 = model.layer4
+
+    def forward(self, x):
+        x = self.conv1(x)
+        x = self.bn1(x)
+        x = self.act1(x)
+        x = self.maxpool(x)
+
+        features = []
+        x = self.layer1(x)
+        features.append(x)
+        x = self.layer2(x)
+        features.append(x)
+        x = self.layer3(x)
+        features.append(x)
+        x = self.layer4(x)
+        features.append(x)
+        return tuple(features)  # List/tuple of 4 feature maps
 
     def init_weights(self, pretrained=None):
         pass
@@ -49,7 +74,8 @@ class TIMMResNet50(nn.Module):
         # Freeze stem regardless of `freeze_stages` value
         # `freeze_stages` only refer to the bottleneck blocks
         # ACRONYMS: m => model; l => layer
-        m = self.model
+        # m = self.model
+        m = self
         m.conv1.eval()
         m.bn1.eval()
         for l in [m.conv1, m.bn1]:
@@ -71,6 +97,3 @@ class TIMMResNet50(nn.Module):
                 # trick: eval have effect on BatchNorm only
                 if isinstance(m, _BatchNorm):
                     m.eval()
-
-    def forward(self, x):
-        return tuple(self.model(x))
