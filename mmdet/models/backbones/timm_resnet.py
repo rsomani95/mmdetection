@@ -55,7 +55,7 @@ class TIMMResNet50(nn.Module):
             for param in l.parameters():
                 param.requires_grad = False
         for i in range(1, self.frozen_stages + 1):
-            l = getattr(self, f"layer{i}")
+            l = getattr(m, f"layer{i}")
             l.eval()
             for param in l.parameters():
                 param.requires_grad = False
