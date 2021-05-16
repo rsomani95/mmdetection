@@ -63,7 +63,7 @@ class TIMMResNet50(nn.Module):
     def train(self, mode=True):
         """Convert the model into training mode while keep normalization layer
         freezed."""
-        super(ResNet, self).train(mode)
+        super(TIMMResNet50, self).train(mode)
         self._freeze_stages()
         if mode and self.norm_eval:
             for m in self.modules():
