@@ -41,6 +41,7 @@ class TIMMResNet50(nn.Module):
             no_jit=no_jit,
             **timm_kwargs,
         )
+        self._freeze_stages()
 
     def init_weights(self, pretrained=None):
         pass
@@ -50,9 +51,8 @@ class TIMMResNet50(nn.Module):
         # `freeze_stages` only refer to the bottleneck blocks
         # ACRONYMS: m => model; l => layer
         m = self.model
-        m.conv1.eval()
-        m.bn1.eval()
         for l in [m.conv1, m.bn1]:
+            l.eval()
             for param in l.parameters():
                 param.requires_grad = False
         for i in range(1, self.frozen_stages + 1):
@@ -65,7 +65,7 @@ class TIMMResNet50(nn.Module):
         """Convert the model into training mode while keep normalization layer
         freezed."""
         super(TIMMResNet50, self).train(mode)
-        self._freeze_stages()
+        # self._freeze_stages()
         if mode and self.norm_eval:
             for m in self.modules():
                 # trick: eval have effect on BatchNorm only
