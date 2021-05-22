@@ -1,10 +1,16 @@
 _base_ = [
-    '../_base_/models/retinanet_r50_fpn.py',
+    # Model File
+    # '../_base_/models/retinanet_r50_fpn.py',  # Stock mmdet without modifications
+    './retinanet_r50_fpn_train_bn.py',  # Train batchnorm layers
+
+    # Dataset File
     # '../_base_/datasets/coco_detection.py',
     './coco_detection_custom.py',
+
+    # Optimizer, Other
     '../_base_/schedules/schedule_1x.py',
     # '../_base_/default_runtime.py'
-    './wandb_runtime.py'
+    './wandb_runtime.py',
 ]
 
 _default_BATCH_SIZE_PER_GPU = 2
