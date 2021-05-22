@@ -1,5 +1,5 @@
 # BATCH_SIZE = 2 # default
-BATCH_SIZE = 12 # default
+BATCH_SIZE = 22 # default
 WIDTH = 640
 HEIGHT = 640
 
