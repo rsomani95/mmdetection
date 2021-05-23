@@ -9,6 +9,7 @@ _base_ = [
 
     # Optimizer, LR & Momentum Schedules
     # '../_base_/schedules/schedule_1x.py',
+    ''
 
     # Runtime - Runner, Logger
     # '../_base_/default_runtime.py'
@@ -46,7 +47,7 @@ momentum_config = dict(
     max_momentum=0.95,
     pct_start=0.3,
 )
-
+runner = dict(type='EpochBasedRunner', max_epochs=12)
 # ========================================================================
 
 # optimizer
