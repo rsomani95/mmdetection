@@ -1,7 +1,7 @@
 # BATCH_SIZE = 2 # default
 BATCH_SIZE = 22 # default
-WIDTH = 640
-HEIGHT = 640
+WIDTH = 480
+HEIGHT = 480
 
 # dataset settings
 dataset_type = 'CocoDataset'

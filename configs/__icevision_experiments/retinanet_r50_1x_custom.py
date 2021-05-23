@@ -1,7 +1,7 @@
 _base_ = [
     # Model File
-    # '../_base_/models/retinanet_r50_fpn.py',  # Stock mmdet without modifications
-    './retinanet_r50_fpn_train_bn.py',  # Train batchnorm layers
+    '../_base_/models/retinanet_r50_fpn.py',  # Stock mmdet without modifications
+    # './retinanet_r50_fpn_train_bn.py',  # Train batchnorm layers
 
     # Dataset File
     # '../_base_/datasets/coco_detection.py',
