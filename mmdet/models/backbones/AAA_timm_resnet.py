@@ -35,7 +35,7 @@ class TIMMResNet50(nn.Module):
             features_only=True,
             out_indices=out_indices,
         )
-        # self._freeze_stages()
+        self._freeze_stages()
 
     def init_weights(self, pretrained=None):
         pass
@@ -59,7 +59,7 @@ class TIMMResNet50(nn.Module):
         """Convert the model into training mode while keep normalization layer
         freezed."""
         super(TIMMResNet50, self).train(mode)
-        self._freeze_stages()
+        # self._freeze_stages()
         if mode and self.norm_eval:
             for m in self.modules():
                 # trick: eval have effect on BatchNorm only
