@@ -37,7 +37,8 @@ optimizer_config = dict(grad_clip=None)
 lr_config = dict(
     policy="onecycle",
     max_lr=SCALED_LR,
-    pct_start=0.3,
+    # pct_start=0.3,
+    pct_start=0.1,
 )
 
 # Momentum policy
