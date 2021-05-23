@@ -7,8 +7,10 @@ _base_ = [
     # '../_base_/datasets/coco_detection.py',
     './coco_detection_custom.py',
 
-    # Optimizer, Other
-    '../_base_/schedules/schedule_1x.py',
+    # Optimizer, LR & Momentum Schedules
+    # '../_base_/schedules/schedule_1x.py',
+
+    # Runtime - Runner, Logger
     # '../_base_/default_runtime.py'
     './wandb_runtime.py',
 ]
@@ -23,6 +25,29 @@ NUM_GPUS = 3
 TOTAL_BATCH_SIZE = BATCH_SIZE_PER_GPU * NUM_GPUS
 LR_SCALING_FACTOR = TOTAL_BATCH_SIZE / _default_TOTAL_BATCH_SIZE
 SCALED_LR = _default_LR * LR_SCALING_FACTOR
+
+# ============ Inplace Optimizer + Scheduler ==========================
+# Use this section if doing 1cycle learning, else don't
+
+# optimizer
+optimizer_config = dict(grad_clip=None)
+
+# LR policy
+lr_config = dict(
+    policy="onecycle",
+    max_lr=SCALED_LR,
+    pct_start=0.3,
+)
+
+# Momentum policy
+momentum_config = dict(
+    policy="onecycle",
+    base_momentum=0.85,
+    max_momentum=0.95,
+    pct_start=0.3,
+)
+
+# ========================================================================
 
 # optimizer
 optimizer = dict(type='SGD', lr=SCALED_LR, momentum=0.9, weight_decay=0.0001)
