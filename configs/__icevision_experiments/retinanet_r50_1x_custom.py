@@ -35,7 +35,7 @@ SCALED_LR = _default_LR * LR_SCALING_FACTOR
 
 # # LR policy
 # lr_config = dict(
-#     policy="onecycle",
+#     policy="OneCycle",
 #     max_lr=SCALED_LR,
 #     # pct_start=0.3,
 #     pct_start=0.1,
@@ -43,7 +43,7 @@ SCALED_LR = _default_LR * LR_SCALING_FACTOR
 
 # # Momentum policy
 # momentum_config = dict(
-#     policy="onecycle",
+#     policy="OneCycle",
 #     base_momentum=0.85,
 #     max_momentum=0.95,
 #     pct_start=0.3,
