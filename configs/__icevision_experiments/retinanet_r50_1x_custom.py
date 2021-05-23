@@ -1,5 +1,3 @@
-from .retinanet_r50_timm_fpn import *
-
 _base_ = [
     # Model File
     # '../_base_/models/retinanet_r50_fpn.py',  # Stock mmdet without modifications
