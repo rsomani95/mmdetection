@@ -50,6 +50,7 @@ class RetinaHead(AnchorHead):
         self.stacked_convs = stacked_convs
         self.conv_cfg = conv_cfg
         self.norm_cfg = norm_cfg
+        print(f"RetinaHead INIT_CFG: {init_cfg}")
         super(RetinaHead, self).__init__(
             num_classes,
             in_channels,

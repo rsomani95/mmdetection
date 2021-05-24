@@ -1,12 +1,11 @@
 # model settings
 model = dict(
     type='RetinaNet',
-    pretrained='',
     backbone=dict(
         type='TIMMResNet50',
         out_indices=(1, 2, 3, 4),
         frozen_stages=1,
-        pretrained=True,
+        # pretrained=True,
         norm_eval=True),
     neck=dict(
         type='FPN',

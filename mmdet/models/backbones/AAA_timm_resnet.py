@@ -1,21 +1,26 @@
 import torch.nn as nn
 import timm
+import torch
 from ..builder import BACKBONES
 from typing import Optional, Collection
 from torch.nn.modules.batchnorm import _BatchNorm
 from mmcv.runner.base_module import BaseModule
 
+
 @BACKBONES.register_module
+# class TIMMResNet50(nn.Module):
 class TIMMResNet50(BaseModule):
     """
     Wrapper for timm's "resnet50"
+    CAREFUL - `mmdet` is a bit unpredictable with pretrained model loading.
+    So, we've hard coded loading the pretrained weights here
     """
 
     def __init__(
         self,
         # -> timm.create_model args
         # model_name: str = model_name,
-        pretrained: bool = True,
+        # pretrained: bool = True,
         out_indices: Optional[Collection[int]] = (1, 2, 3, 4),
         # -> freeze layer args
         norm_eval: bool = True,
@@ -27,15 +32,29 @@ class TIMMResNet50(BaseModule):
         self.norm_eval = norm_eval
         self.frozen_stages = frozen_stages
 
-        # timm args
-        self.pretrained = pretrained
+        # DOESN'T WORK
+        # # timm args
+        # self.init_cfg = dict(
+        #     type="Pretrained",
+        #     checkpoint="https://github.com/rwightman/pytorch-image-models/releases/download/v0.1-weights/resnet50_ram-a26f946b.pth",
+        # )
+
         self.model = timm.create_model(
             model_name="resnet50",
-            pretrained=pretrained,
+            pretrained=True,
             features_only=True,
             out_indices=out_indices,
         )
         self._freeze_stages()
+        print(f"Backbone INIT_CFG: {self.init_cfg}")
+        self._test_pretrained_weights()
+
+    def _test_pretrained_weights(self):
+        model = timm.create_model("resnet50", pretrained=True, features_only=True)
+        assert torch.equal(model.conv1.weight, self.model.conv1.weight)
+        print(f"Loaded hardcoded pretrained weights from `timm`")
+
+        # assert self.model.conv1.weight[0]
 
     def init_weights(self, pretrained=None):
         pass
