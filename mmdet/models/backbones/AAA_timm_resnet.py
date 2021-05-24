@@ -3,10 +3,10 @@ import timm
 from ..builder import BACKBONES
 from typing import Optional, Collection
 from torch.nn.modules.batchnorm import _BatchNorm
-
+from mmcv.runner.base_module import BaseModule
 
 @BACKBONES.register_module
-class TIMMResNet50(nn.Module):
+class TIMMResNet50(BaseModule):
     """
     Wrapper for timm's "resnet50"
     """
