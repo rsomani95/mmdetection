@@ -51,7 +51,10 @@ class BaseMobileNetV3(nn.Module, metaclass=ABCMeta):
     def train(self, mode=True):
         "Convert the model to training mode while optionally freezing BatchNorm"
         super(BaseMobileNetV3, self).train(mode)
-        self._freeze_stages()
+        self.freeze(
+            freeze_stem=self.frozen_stem,
+            freeze_blocks=self.frozen_stages,
+        )
         if mode and self.norm_eval:
             for m in self.modules():
                 if isinstance(m, _BatchNorm):
