@@ -1,6 +1,6 @@
 _base_ = [
     # Model File
-    './retinanet_mnv3_timm_fpn.py'
+    './retinanet_mnv3_timm_fpn.py',
 
     # Dataset File
     './coco_detection_custom.py',
